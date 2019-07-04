@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import autobind from 'react-autobind';
+import axios from 'axios';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import ViewItems from './components/ViewItems';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return(
+      <div id='main'>
+      
+        <Router>
+          <Route exact={true} path="/view-all-items" component={ViewItems} />
+        </Router>
+      </div>
+    );
+  }
 }
-
 export default App;
