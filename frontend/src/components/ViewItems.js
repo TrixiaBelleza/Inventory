@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import autobind from 'react-autobind';
 import 'semantic-ui-css/semantic.min.css';
-import { Table, Icon } from 'semantic-ui-react';
+import { Table, Icon, Button, Modal, Form } from 'semantic-ui-react';
 
 class ViewItems extends Component {
 	constructor(props) {
@@ -15,7 +15,8 @@ class ViewItems extends Component {
 			name : '',
 			qty: 0,
 			amount: 0,
-			deleted : false
+			deleted : false,
+			added : false
 		}
 	}
 
@@ -37,7 +38,59 @@ class ViewItems extends Component {
 		.catch((e) => { console.log(e); })
 	}
 
+	handleInputNameChange(e) {
+		this.setState({
+			name : e.target.value,
+			added: false
+		});
+	}
+
+	handleInputQtyChange(e) {
+		this.setState({
+			qty : e.target.value,
+			added: false
+		});
+		console.log(this.state.qty)
+	}
+
+	handleInputAmountChange(e) {
+		this.setState({
+			amount : e.target.value,
+			added: false
+		});
+	}
+
+	handleAddedChange(){
+		this.setState({
+			added: true
+		});
+		console.log("Added: " + this);
+	}
+
+	addItem() {
+		if(this.state.name != '') {
+			axios.post('http://localhost:3001/add-item', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					name: this.state.name,
+					qty: this.state.qty,
+					amount: this.state.amount
+				}
+			})
+			.then(function (response) {
+			})
+			.catch(err => {
+				console.log(err);
+			});
+			this.handleAddedChange();
+		}
+	}
+		
 	render() {
+		let submit = null;
+	
 		return(
 			<div>
 				<h1 align="center"> Inventory Details </h1>
@@ -66,12 +119,40 @@ class ViewItems extends Component {
 									
 							</Table.Row>	
 						)
-
 					})}
 					</Table.Body>	
 					
 				</Table>
-
+				</div>
+				<br/>
+				<div>
+				<Modal trigger={
+					<Button animated='vertical'>
+					<Button.Content visible>Add Item</Button.Content>
+					<Button.Content hidden> 
+						<Icon link name='add' />
+					</Button.Content>
+					</Button>
+					}>
+					<Modal.Header> Add Item </Modal.Header>
+					<Modal.Content>
+						<Form>
+							<Form.Field>
+								<label> Item Name </label>
+								<input placeholder = 'Item Name' onChange = {this.handleInputNameChange}/>
+							</Form.Field>
+							<Form.Field>
+								<label> Quantity </label>
+								<input type='number' placeholder = 'Quantity' onChange = {this.handleInputQtyChange}/>
+							</Form.Field>
+							<Form.Field>
+								<label> Amount </label>
+								<input type='number' step='0.01' placeholder = 'Amount' onChange = {this.handleInputAmountChange}/>
+							</Form.Field>
+							<Button type='submit' onClick={this.addItem}> Submit </Button>
+						</Form>
+					</Modal.Content>
+				</Modal>
 				</div>
 			</div>
 		)
