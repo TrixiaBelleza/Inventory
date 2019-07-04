@@ -20,3 +20,15 @@ exports.add_item = (req, res, next) => {
 		else res.send(data);
 	})
 }
+
+exports.delete_item = (req, res, next) => {
+	console.log(req.body);
+	const data = {
+		id : req.body.data.id
+	};
+	const query_string = 'DELETE FROM items where id = ?';
+	db.query(query_string, [data.id], (err,result) => {
+		if(err) console.log(err);
+		res.send(result);
+	});
+};

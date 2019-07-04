@@ -16,7 +16,8 @@ class ViewItems extends Component {
 			qty: 0,
 			amount: 0,
 			deleted : false,
-			added : false
+			added : false,
+			showModal : false
 		}
 	}
 
@@ -66,6 +67,9 @@ class ViewItems extends Component {
 		});
 		console.log("Added: " + this);
 	}
+	closeModal = () => {
+		this.setState({ showModal: false })
+	}
 
 	addItem() {
 		if(this.state.name != '') {
@@ -85,12 +89,38 @@ class ViewItems extends Component {
 				console.log(err);
 			});
 			this.handleAddedChange();
+			this.closeModal();
 		}
 	}
-		
+
+	handleDeletedChange() {
+		this.setState({
+			deleted : true
+		});
+	}
+
+	deleteItem(e) {
+		console.log(e.target.value);
+		axios.post('http://localhost:3001/delete-item', {
+			headers: {
+				'Content-Type' : 'application/json'
+			},
+			data: {
+				id : e.target.value
+			}
+		})
+		.then(function (response) {
+			console.log(response.data);
+		})
+		.catch(err => {
+			console.error(err);
+		});
+		this.handleDeletedChange();
+	}
+
 	render() {
 		let submit = null;
-	
+		
 		return(
 			<div>
 				<h1 align="center"> Inventory Details </h1>
@@ -99,6 +129,7 @@ class ViewItems extends Component {
 				<Table singleLine>
 					<Table.Header>	
 						<Table.Row>
+							<Table.HeaderCell> ID </Table.HeaderCell>
 							<Table.HeaderCell> Name </Table.HeaderCell>
 							<Table.HeaderCell> Quantity </Table.HeaderCell>
 							<Table.HeaderCell> Amount </Table.HeaderCell>
@@ -111,12 +142,12 @@ class ViewItems extends Component {
 					{this.state.items.map((item) => {
 						return(
 							<Table.Row> 
+									<Table.Cell>{item.id}</Table.Cell>
 									<Table.Cell>{item.name}</Table.Cell>
 									<Table.Cell>{item.qty}</Table.Cell>
 									<Table.Cell>{item.amount}</Table.Cell>
-									<Table.Cell> <Icon link name='trash alternate'/> </Table.Cell>
+									<Table.Cell> <Button value={item.id} onClick={this.deleteItem}> Delete </Button> </Table.Cell>
 									<Table.Cell> <Icon link name='edit'/> </Table.Cell>
-									
 							</Table.Row>	
 						)
 					})}
@@ -149,8 +180,13 @@ class ViewItems extends Component {
 								<label> Amount </label>
 								<input type='number' step='0.01' placeholder = 'Amount' onChange = {this.handleInputAmountChange}/>
 							</Form.Field>
-							<Button type='submit' onClick={this.addItem}> Submit </Button>
+							<Button type='submit' onClick={this.addItem} data-dismiss="modal"> Submit </Button>
 						</Form>
+						<label id="success-message">
+						{
+							this.state.added ? 'Item Successfully Added!' : ''
+						}
+               			 </label>
 					</Modal.Content>
 				</Modal>
 				</div>
