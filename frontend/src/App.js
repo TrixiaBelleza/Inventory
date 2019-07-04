@@ -10,7 +10,7 @@ class App extends Component {
       <div id='main'>
       
         <Router>
-          <Route exact={true} path="/view-all-items" component={ViewItems} />
+          <Route exact={true} path="/" component={ViewItems} />
         </Router>
       </div>
     );

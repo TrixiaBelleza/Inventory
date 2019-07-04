@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import autobind from 'react-autobind';
 import 'semantic-ui-css/semantic.min.css';
-import { Table } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 
 class ViewItems extends Component {
 	constructor(props) {
@@ -40,7 +40,7 @@ class ViewItems extends Component {
 	render() {
 		return(
 			<div>
-				<h1> Inventory Details </h1>
+				<h1 align="center"> Inventory Details </h1>
 
 				<div>
 				<Table singleLine>
@@ -49,6 +49,8 @@ class ViewItems extends Component {
 							<Table.HeaderCell> Name </Table.HeaderCell>
 							<Table.HeaderCell> Quantity </Table.HeaderCell>
 							<Table.HeaderCell> Amount </Table.HeaderCell>
+							<Table.HeaderCell> Delete </Table.HeaderCell>
+							<Table.HeaderCell> Edit </Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
@@ -59,6 +61,9 @@ class ViewItems extends Component {
 									<Table.Cell>{item.name}</Table.Cell>
 									<Table.Cell>{item.qty}</Table.Cell>
 									<Table.Cell>{item.amount}</Table.Cell>
+									<Table.Cell> <Icon link name='trash alternate'/> </Table.Cell>
+									<Table.Cell> <Icon link name='edit'/> </Table.Cell>
+									
 							</Table.Row>	
 						)
 
