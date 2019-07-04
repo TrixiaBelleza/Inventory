@@ -118,6 +118,28 @@ class ViewItems extends Component {
 		this.handleDeletedChange();
 	}
 
+	editItem(e) {
+		console.log(e.target.value);
+		console.log(this.state.name)		
+		axios.post('http://localhost:3001/edit-item/', {
+			headers: {
+				'Content-Type' : 'application/json'
+			},
+			data: {
+				id : e.target.value,
+				name : this.state.name,
+				qty : this.state.qty,
+				amount : this.state.amount
+			}
+		})
+		.then(function (response) {
+			console.log(response.data);
+		})
+		.catch(err => {
+			console.error(err);
+		});
+	}
+
 	render() {
 		let submit = null;
 		
@@ -147,7 +169,28 @@ class ViewItems extends Component {
 									<Table.Cell>{item.qty}</Table.Cell>
 									<Table.Cell>{item.amount}</Table.Cell>
 									<Table.Cell> <Button value={item.id} onClick={this.deleteItem}> Delete </Button> </Table.Cell>
-									<Table.Cell> <Icon link name='edit'/> </Table.Cell>
+									<Table.Cell> 
+										<Modal trigger = {<Button > Edit </Button> }>
+											<Modal.Header> Edit Item </Modal.Header>
+											<Modal.Content>
+												<Form>
+													<Form.Field>
+														<label> Item Name </label>
+														<input onChange = {this.handleInputNameChange}/>
+													</Form.Field>
+													<Form.Field>
+														<label> Quantity </label>
+														<input type='number'  onChange = {this.handleInputQtyChange}/>
+													</Form.Field>
+													<Form.Field>
+														<label> Amount </label>
+														<input type='number' step='0.01' onChange = {this.handleInputAmountChange}/>
+													</Form.Field>
+												<Button type='submit' value={item.id} data-dismiss="modal" onClick={this.editItem}> Save </Button>
+												</Form>
+											</Modal.Content>
+										</Modal>
+									</Table.Cell>
 							</Table.Row>	
 						)
 					})}
