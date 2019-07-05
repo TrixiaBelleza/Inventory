@@ -21,6 +21,18 @@ A repository for the Questronix Online Exam
 * `git clone https://github.com/TrixiaBelleza/Inventory`
 * `cd Inventory`
 
+To import the database schema to your local dbms..
+*`cd Inventory`
+*`cd backend`
+*`cd database`
+
+or 
+
+*`cd Inventory/backend/database`
+*`mysql -u root -p`
+
+*`source inventory.sql`
+
 To obtain packages that the backend will be using..
 * `npm install`
 
