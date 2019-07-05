@@ -45,3 +45,9 @@ To add npm packages to package.json..
 
 then check http://localhost:3000 for the react application and http://localhost:3001 for the server
 ```
+
+## NOTE: 
+----------
+```
+If anything goes wrong, feel free to email me @ trixiabelleza@gmail.com
+```
