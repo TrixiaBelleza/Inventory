@@ -49,5 +49,8 @@ then check http://localhost:3000 for the react application and http://localhost:
 ## NOTE: 
 ----------
 ```
-If anything goes wrong, feel free to email me @ trixiabelleza@gmail.com
+*It may take a while in loading the REACT APP (using npm start)
+
+*If anything goes wrong, feel free to email me @ trixiabelleza@gmail.com
+
 ```
