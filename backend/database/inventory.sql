@@ -8,6 +8,6 @@ create table items (
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(200),
 	qty INT,
-	amount INT,
+	amount DECIMAL(16,2),
 	constraint id_pk primary key(id)
 );

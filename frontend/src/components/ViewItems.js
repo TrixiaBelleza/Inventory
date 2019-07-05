@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import autobind from 'react-autobind';
 import 'semantic-ui-css/semantic.min.css';
-import { Table, Icon, Button, Modal, Form } from 'semantic-ui-react';
+import { Table, Icon, Button, Modal, Form, Segment } from 'semantic-ui-react';
 
 class ViewItems extends Component {
 	constructor(props) {
@@ -40,6 +40,7 @@ class ViewItems extends Component {
 	}
 
 	handleInputNameChange(e) {
+		console.log("E!!!");
 		this.setState({
 			name : e.target.value,
 			added: false
@@ -51,7 +52,6 @@ class ViewItems extends Component {
 			qty : e.target.value,
 			added: false
 		});
-		console.log(this.state.qty)
 	}
 
 	handleInputAmountChange(e) {
@@ -65,12 +65,8 @@ class ViewItems extends Component {
 		this.setState({
 			added: true
 		});
-		console.log("Added: " + this);
 	}
-	closeModal = () => {
-		this.setState({ showModal: false })
-	}
-
+	
 	addItem() {
 		if(this.state.name != '') {
 			axios.post('http://localhost:3001/add-item', {
@@ -100,7 +96,6 @@ class ViewItems extends Component {
 	}
 
 	deleteItem(e) {
-		console.log(e.target.value);
 		axios.post('http://localhost:3001/delete-item', {
 			headers: {
 				'Content-Type' : 'application/json'
@@ -120,7 +115,6 @@ class ViewItems extends Component {
 
 	editItem(e) {
 		console.log(e.target.value);
-		console.log(this.state.name)		
 		axios.post('http://localhost:3001/edit-item/', {
 			headers: {
 				'Content-Type' : 'application/json'
@@ -138,11 +132,23 @@ class ViewItems extends Component {
 		.catch(err => {
 			console.error(err);
 		});
+		this.closeModal();
 	}
 
+	openModal() {
+		this.setState({
+			showModal : true
+		});
+	}
+
+	closeModal() {
+		this.setState({
+			showModal : false
+		});
+	}
 	render() {
-		let submit = null;
-		
+		const { showModal, dimmer } = this.state
+
 		return(
 			<div>
 				<h1 align="center"> Inventory Details </h1>
@@ -163,20 +169,23 @@ class ViewItems extends Component {
 					
 					{this.state.items.map((item) => {
 						return(
-							<Table.Row> 
+							<Table.Row key = {item.id}> 
 									<Table.Cell>{item.id}</Table.Cell>
 									<Table.Cell>{item.name}</Table.Cell>
 									<Table.Cell>{item.qty}</Table.Cell>
 									<Table.Cell>{item.amount}</Table.Cell>
 									<Table.Cell> <Button value={item.id} onClick={this.deleteItem}> Delete </Button> </Table.Cell>
 									<Table.Cell> 
+										{/* <Button onClick={() => this.openModal()}> Edit </Button>
+										<Modal open={this.state.showModal} onClose={() => this.closeModal()}> */}
 										<Modal trigger = {<Button > Edit </Button> }>
+											{console.log(item)}
 											<Modal.Header> Edit Item </Modal.Header>
 											<Modal.Content>
 												<Form>
 													<Form.Field>
 														<label> Item Name </label>
-														<input onChange = {this.handleInputNameChange}/>
+														<input onChange = {this.handleInputNameChange} />
 													</Form.Field>
 													<Form.Field>
 														<label> Quantity </label>
@@ -225,11 +234,11 @@ class ViewItems extends Component {
 							</Form.Field>
 							<Button type='submit' onClick={this.addItem} data-dismiss="modal"> Submit </Button>
 						</Form>
-						<label id="success-message">
+						<Segment vertical>
 						{
 							this.state.added ? 'Item Successfully Added!' : ''
 						}
-               			 </label>
+               			 </Segment>
 					</Modal.Content>
 				</Modal>
 				</div>
